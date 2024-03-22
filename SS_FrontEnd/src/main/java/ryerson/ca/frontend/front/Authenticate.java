@@ -37,7 +37,7 @@ public class Authenticate {
 
         signatureAlgorithm = SignatureAlgorithm.HS256;
         
-        secretString = Encoders.BASE64.encode("mysecuresecurecode".getBytes());
+        secretString = Encoders.BASE64.encode("mysecuresecurecodemysecuresecurecode".getBytes());
 
     }
 
@@ -76,7 +76,7 @@ public class Authenticate {
         System.out.println("I am veryfying! :" + jwt);
         try {
             jws = Jwts.parserBuilder() // (1)
-                    .setSigningKey("mysecuresecurecode") // (2)
+                    .setSigningKey("mysecuresecurecodemysecuresecurecode") // (2)
                     .build() // (3)
                     .parseClaimsJws(jwt); // (4)
 

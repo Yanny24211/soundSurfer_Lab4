@@ -11,7 +11,8 @@
     <div class="login-container">
         <h2>SoundSurfer Login</h2>
     
-        <form action="Login" method="post">
+        <form action="FrontEnd" method="post">
+            <input type="hidden" name="pageName" value="login"/>
             <div class="form-group"> 
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>

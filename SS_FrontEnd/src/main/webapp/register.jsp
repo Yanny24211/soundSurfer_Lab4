@@ -10,7 +10,8 @@
 <body>
     <div class="login-container">
         <h2>SoundSurfer Register</h2>
-        <form action="Register" method="post">
+        <form action="FrontEnd" method="post">
+            <input type="hidden" name="pageName" value="register"/>
             <div class="form-group"> 
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -21,7 +22,7 @@
             </div>
             <button type="submit" class="btn">Complete Registration</button>
         </form>
-        <p>Have an account?  <a href="index.jsp" class="btn btn-register">Login</a></p>
+        <p>Have an account?  <a href="login.jsp" class="btn btn-register">Login</a></p>
     </div>    
 </body>
 </html>

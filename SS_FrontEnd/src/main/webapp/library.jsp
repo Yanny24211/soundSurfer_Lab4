@@ -1,9 +1,3 @@
-<%-- 
-    Document   : libaray
-    Created on : Mar 22, 2024, 3:44:50 p.m.
-    Author     : yannypatel
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

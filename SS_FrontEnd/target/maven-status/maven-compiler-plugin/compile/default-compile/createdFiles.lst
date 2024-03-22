@@ -1,0 +1,7 @@
+ryerson/ca/frontend/helper/SongsXML.class
+ryerson/ca/frontend/business/XMLParser.class
+ryerson/ca/frontend/front/Authenticate.class
+ryerson/ca/frontend/helper/User.class
+ryerson/ca/frontend/front/FrontEnd.class
+ryerson/ca/frontend/business/Business.class
+ryerson/ca/frontend/helper/Song.class

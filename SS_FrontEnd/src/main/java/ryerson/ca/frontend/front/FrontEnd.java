@@ -21,8 +21,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.NewCookie;
-import ryerson.ca.business.Business;
-import ryerson.ca.helper.BooksXML;
+import ryerson.ca.frontend.helper.Song;
+import ryerson.ca.frontend.helper.SongsXML;
+import ryerson.ca.frontend.helper.User; 
+import ryerson.ca.frontend.business.Business; 
+
 
 /**
  *
@@ -30,7 +33,7 @@ import ryerson.ca.helper.BooksXML;
  */
 @WebServlet(name = "FrontEnd", urlPatterns = {"/FrontEnd"})
 public class FrontEnd extends HttpServlet {
-
+    
     Authenticate autho;
 
     public FrontEnd() {
@@ -86,48 +89,63 @@ public class FrontEnd extends HttpServlet {
             throws ServletException, IOException {
 
         String token = isAuthenticated(request).getKey();
-        String uname = isAuthenticated(request).getValue();
+        //String uname = isAuthenticated(request).getValue();
         String hiddenParam = request.getParameter("pageName");
+        String username; 
+        String password;
+        PrintWriter out = response.getWriter(); 
         switch (hiddenParam) {
             case "login":
-                String username = request.getParameter("username");
-                String passwrod = request.getParameter("passwrod");
-                boolean isAuthenticated = Business.isAuthenticated(username, passwrod);
+                username = request.getParameter("username");
+                password = request.getParameter("password");
+                boolean isAuthenticated = Business.validate(username, password);
                 if (isAuthenticated) {
-                       request.setAttribute("username", username);
+                    request.setAttribute("username", username);
                     token = autho.createJWT("FrontEnd", username, 100000);
 
                     Cookie newCookie = new Cookie(authenticationCookieName, token);
                     response.addCookie(newCookie);
                     RequestDispatcher requestDispatcher = request.
-                            getRequestDispatcher("frontpageWithLogin.jsp");
+                            getRequestDispatcher("discover.jsp");
 
                     requestDispatcher.forward(request, response);
 
                 }
                 break;
-            case "search":
-
-                BooksXML result;
-                String query = request.getParameter("query");
-                if (token.isEmpty()) {
-                    result = retreiveServicesFromBackend(query, null);
-                    request.setAttribute("bookResults", result);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("frontpageWithoutLogin.jsp");
-
-                    requestDispatcher.forward(request, response);
-                    break;
-                } else {
-                    request.setAttribute("username", uname);
-                    result = retreiveServicesFromBackend(query, token);
-
-                    request.setAttribute("bookResults", result);
-
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("frontpageWithLogin.jsp");
-
-                    requestDispatcher.forward(request, response);
+            case "register":
+                username = request.getParameter("username");
+                password = request.getParameter("password");
+                boolean exists = (Business.getUser(username) == null);
+                if (exists) {
+                    User user = new User(username, password); 
+                    Business.addUser(user); 
+                    out.println("Registration Successful, Redirecting to Login Page!");
+                    response.sendRedirect("login.jsp");
+         
                 }
+                else{out.println("Username already taken. Choose a different username.");}
                 break;
+//            case "search":
+//                BooksXML result;
+//                String query = request.getParameter("query");
+//                if (token.isEmpty()) {
+//                    result = retreiveServicesFromBackend(query, null);
+//                    request.setAttribute("bookResults", result);
+//                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("frontpageWithoutLogin.jsp");
+//
+//                    requestDispatcher.forward(request, response);
+//                    break;
+//                } else {
+//                    request.setAttribute("username", uname);
+//                    result = retreiveServicesFromBackend(query, token);
+//
+//                    request.setAttribute("bookResults", result);
+//
+//                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("frontpageWithLogin.jsp");
+//
+//                    requestDispatcher.forward(request, response);
+//                }
+//                break;
         }
 
         
@@ -169,17 +187,17 @@ public class FrontEnd extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Process Redirector";
     }// </editor-fold>
 
-    private BooksXML retreiveServicesFromBackend(String query, String token) {
-        try {
-            return (Business.getServices(query, token));
-        } catch (IOException ex) {
-            Logger.getLogger(FrontEnd.class.getName()).log(Level.SEVERE, null, ex);
-            return (null);
-        }
-
-    }
+//    private SongsXML retreiveServicesFromBackend(String query, String token) {
+//        try {
+//            return (Business.getServices(query, token));
+//        } catch (IOException ex) {
+//            Logger.getLogger(FrontEnd.class.getName()).log(Level.SEVERE, null, ex);
+//            return (null);
+//        }
+//
+//    }
 
 }
