@@ -5,10 +5,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this t
 */
 package ryerson.ca.discover.helper;
 
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 /**
  *
  
 @author yannypatel*/
+
+@XmlRootElement(name = "song")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Song {
     private String title;
     private String artist; 
