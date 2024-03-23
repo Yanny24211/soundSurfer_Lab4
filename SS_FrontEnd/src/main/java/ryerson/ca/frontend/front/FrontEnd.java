@@ -20,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.NewCookie;
 import ryerson.ca.frontend.helper.Song;
 import ryerson.ca.frontend.helper.SongsXML;
@@ -102,11 +103,13 @@ public class FrontEnd extends HttpServlet {
                 if (isAuthenticated) {
                     request.setAttribute("username", username);
                     token = autho.createJWT("FrontEnd", username, 100000);
-
+                    request.setAttribute("token", token);
+         
                     Cookie newCookie = new Cookie(authenticationCookieName, token);
+                    System.out.println("Cookie" + newCookie); 
                     response.addCookie(newCookie);
                     RequestDispatcher requestDispatcher = request.
-                            getRequestDispatcher("discover.jsp");
+                            getRequestDispatcher("homepage.jsp");
 
                     requestDispatcher.forward(request, response);
 
@@ -124,6 +127,20 @@ public class FrontEnd extends HttpServlet {
          
                 }
                 else{out.println("Username already taken. Choose a different username.");}
+                break;
+            case "logout":
+                HttpSession session = request.getSession(); 
+                System.out.println("Sesson:" + session);
+                session.removeAttribute("username");
+                session.invalidate(); 
+                response.sendRedirect("login.jsp");
+                break; 
+            case "goDiscover":
+                response.sendRedirect("discover.jsp");
+                break; 
+                
+            case "goTrackLib": 
+                response.sendRedirect("library.jsp");
                 break;
 //            case "search":
 //                BooksXML result;
