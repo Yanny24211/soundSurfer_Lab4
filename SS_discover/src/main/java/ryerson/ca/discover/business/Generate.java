@@ -1,46 +1,48 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ryerson.ca.discover.business;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import ryerson.ca.discover.helper.User;
-/**
- *
- * @author deeps
- */
-public class Generate {
-    public Generate() {
-     User user = (User) session.getAttribute("user");
-        if(user ==null){
-            response.sendRedirect("index.jsp");
-        }
-        java.util.Random random = new java.util.Random();
-        
-        String filePath = "C:\\Users\\deeps\\Desktop\\coe692_term_project\\soundSurfer_Lab4\\SS_discover\\tracks.txt";
+import java.util.Collections;
+import java.util.List;
 
-        ArrayList<String> trackIds = new ArrayList<>();
-        trackIds.add("");
-        
+public class Generate {
+    public static void generateAndInsertSongs() {
+        try {
+            List<String> songIds = readSongIdsFromFile("C:\\Users\\deeps\\Desktop\\coe692_term_project\\soundSurfer_Lab4\\SS_discover\\tracks.txt");
+            List<String> selectedSongIds = selectRandomSongs(songIds);
+
+            for (String songId : selectedSongIds) {
+                generateIframe(songId);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to read Spotify song IDs from a file
+    private static List<String> readSongIdsFromFile(String filePath) throws IOException {
+        List<String> songIds = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                trackIds.add(line);
+                songIds.add(line.trim()); 
             }
-        } catch (IOException e) {System.out.println(e);}
-        int randomValue = random.nextInt(trackIds.size()); 
-        
-        String trackId = trackIds.get(randomValue);
-        request.setAttribute("trackId", trackId);
-        System.out.println(trackId);       
+        }
+        return songIds;
+    }
+
+    private static List<String> selectRandomSongs(List<String> songIds) {
+        Collections.shuffle(songIds);
+        return songIds.subList(0, Math.min(songIds.size(), 9));
+    }
+
+    private static void generateIframe(String songId) {
+        String iframeSrc = "https://open.spotify.com/embed/track/" + songId + "?utm_source=generator";
+        String iframeHtml = "<div class=\"song\">\n" +
+                            "    <iframe style=\"border-radius:12px\" src=\"" + iframeSrc + "\" width=\"100%\" height=\"352\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>\n" +
+                            "</div>";
+        System.out.println(iframeHtml);
     }
 }
