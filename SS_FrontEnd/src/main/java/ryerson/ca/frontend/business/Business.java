@@ -33,7 +33,7 @@ public class Business {
         Connection con = null; 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Account_LBS?autoReconnect=true&useSSL=false", "root", "student123");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/account?autoReconnect=true&useSSL=false", "root", "student");
             System.out.println("Connection Established");
         }
         catch(Exception e){System.out.println("Connection Failed: " + e);} 
