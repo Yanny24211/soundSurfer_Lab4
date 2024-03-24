@@ -146,27 +146,16 @@ public class FrontEnd extends HttpServlet {
             case "goTrackLib": 
                 response.sendRedirect("library.jsp");
                 break;
-//            case "search":
-//                BooksXML result;
-//                String query = request.getParameter("query");
-//                if (token.isEmpty()) {
-//                    result = retreiveServicesFromBackend(query, null);
-//                    request.setAttribute("bookResults", result);
-//                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("frontpageWithoutLogin.jsp");
-//
-//                    requestDispatcher.forward(request, response);
-//                    break;
-//                } else {
-//                    request.setAttribute("username", uname);
-//                    result = retreiveServicesFromBackend(query, token);
-//
-//                    request.setAttribute("bookResults", result);
-//
-//                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("frontpageWithLogin.jsp");
-//
-//                    requestDispatcher.forward(request, response);
-//                }
-//                break;
+            case "search":
+                SongsXML result;
+                String query = request.getParameter("query");
+                //request.setAttribute("username", uname);
+                result = retreiveServicesFromBackend(query, token);
+
+                request.setAttribute("bookResults", result);
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("frontpageWithLogin.jsp");
+                requestDispatcher.forward(request, response);
+                break;
         }
 
         
@@ -211,14 +200,14 @@ public class FrontEnd extends HttpServlet {
         return "Process Redirector";
     }// </editor-fold>
 
-//    private SongsXML retreiveServicesFromBackend(String query, String token) {
-//        try {
-//            return (Business.getServices(query, token));
-//        } catch (IOException ex) {
-//            Logger.getLogger(FrontEnd.class.getName()).log(Level.SEVERE, null, ex);
-//            return (null);
-//        }
-//
-//    }
+    private SongsXML retreiveServicesFromBackend(String query, String token) {
+        try {
+            return (Business.getServices(query, token));
+        } catch (IOException ex) {
+            Logger.getLogger(FrontEnd.class.getName()).log(Level.SEVERE, null, ex);
+            return (null);
+        }
+
+    }
 
 }
