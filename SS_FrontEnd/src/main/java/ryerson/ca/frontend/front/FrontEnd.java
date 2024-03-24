@@ -114,6 +114,10 @@ public class FrontEnd extends HttpServlet {
                     requestDispatcher.forward(request, response);
 
                 }
+                else{
+                    out.println("Login Attempt Unsuccessful, Please Try Again");
+                    response.sendRedirect("login.jsp");
+                }
                 break;
             case "register":
                 username = request.getParameter("username");
