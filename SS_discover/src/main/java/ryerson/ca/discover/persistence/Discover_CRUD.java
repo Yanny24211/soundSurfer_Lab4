@@ -28,6 +28,4 @@ public class Discover_CRUD {
             statement.executeUpdate();
         }
     }
-
-    // Other methods for CRUD operations...
 }

@@ -45,7 +45,8 @@ public class Business {
         String pass = user.getPassword(); 
         try{
             
-            Connection con = getCon(); 
+            Connection con; 
+            con = getCon();
             String userQ = "insert into theUser(user_id, username, date_of_birth, password) values (null, \"" + uname + "\", null, \"" + pass + "\")"; 
             PreparedStatement  ps = con.prepareStatement(userQ); 
             System.out.print(userQ);

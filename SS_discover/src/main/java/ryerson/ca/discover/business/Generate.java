@@ -17,7 +17,6 @@ public class Generate {
                 generateIframe(songId);
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -31,7 +30,9 @@ public class Generate {
             }
         }
         return songIds;
+
     }
+
 
     private static List<String> selectRandomSongs(List<String> songIds) {
         Collections.shuffle(songIds);
