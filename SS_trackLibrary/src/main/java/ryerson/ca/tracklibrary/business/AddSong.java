@@ -19,36 +19,37 @@ public class AddSong extends HttpServlet {
         Connection con = null; 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/soundsurfer?autoReconnect=true&useSSL=false", "root", "student123");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/account?autoReconnect=true&useSSL=false", "root", "student");
             System.out.println("Connection Established");
         }
         catch(Exception e){System.out.println("Connection Failed: " + e);} 
         return con;
     }
     
-    public void addSong(Song song, int totals, User user){
-        String title = song.getTitle(); 
-        String artist = song.getArtist(); 
-        String uname = user.getUsername(); 
-        try{
-            
-            Connection con = getCon(); 
-            String userQ = "update theUser set fav_artist = \""+ artist +"\", fav_genre = \"Rap\", fav_song = \""+ title +"\", num_songs = "+totals+", num_artists = "+totals+" where username = \""+ uname +"\"";
-            PreparedStatement  ps = con.prepareStatement(userQ); 
-            System.out.print(userQ);
-            int rowsAffected = ps.executeUpdate();
-            System.out.print("# of Rows: " + rowsAffected);
-            if(rowsAffected > 0){
-                 System.out.println("Rows added"); 
-            }
-            else{
-                System.out.println("Rows not added"); 
-            }
-            con.close();
+    public void addSong(Song song, int user, String user1) {
+    String title = song.getTitle();
+    String artist = song.getArtist();
+    int rating = song.getRating();
+
+    try {
+        Connection con = getCon();
+        String insertQuery = "INSERT INTO user_song (title, artist, rating) VALUES ('" + title + "', '" + artist + "', " + rating + ")";
+        PreparedStatement ps = con.prepareStatement(insertQuery);
+
+        int rowsAffected = ps.executeUpdate();
+
+        if (rowsAffected > 0) {
+            System.out.println("Song inserted into database");
+        } else {
+            System.out.println("Failed to insert song into database");
         }
-        catch(Exception e){System.out.println(e);}
- 
+
+        con.close();
+    } catch (Exception e) {
+        System.out.println("Error: " + e);
     }
+}
+
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -57,7 +58,7 @@ public class AddSong extends HttpServlet {
         String songName = request.getParameter("songName");
         String artist = request.getParameter("artist");
         int rating = Integer.parseInt(request.getParameter("rating"));
-        User user = (User) request.getSession().getAttribute("user");
+        String user = (String) request.getAttribute("user");
         // Create a new Song object
         Song newSong = new Song(songName, artist, rating);
        

@@ -1,3 +1,12 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.SQLException"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="ryerson.ca.frontend.helper.Song"%>
 <%@page import="ryerson.ca.frontend.helper.User"%>
@@ -104,19 +113,39 @@
                 color: #fff;
                 font-family:Verdana, Geneva, Tahoma, sans-serif;
             }
+             table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #eee;
+            color: black;
+        }
+
+        /* Style for the remove button */
+        .remove-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
         </style>
     </head>
-    <body>
-        <% 
-            String username = (String) request.getAttribute("username"); 
-            String token = (String)request.getAttribute("token");
-            if(token == null){ 
-                response.sendRedirect("login.jsp");
-            }
-        %>
+    
         <div class="top-bar">
-            <img src="resources/tracklibraryicon.png" alt="libraryicon" class="libraryicon">
             <div class="main-heading">
                 <h1>Track Management Library</h1>
             </div>
@@ -141,28 +170,52 @@
                 <input type="submit" value="Confirm">
             </form>
         </div>
-
+        <h2>Search Songs</h2> 
+        <form action="FrontEnd" method="post"> 
+            <input type="hidden" name="pageName" value="search"/>
+                Search in song titles and artist names
+            <input type="text"  name="query">
+          <input type="submit">
+        </form>
         <div id="addedSongs" class="songListHeader">
-            <h2>Added Songs:</h2>
-            <ul>
-                <%
-                    ArrayList<Song> addedSongs = (ArrayList<Song>) session.getAttribute("addedSongs");
-                    if (addedSongs != null) {
-                        for (int i = 0; i < addedSongs.size(); i++) {
-                            Song song = addedSongs.get(i);
-                %>
-                <li>
-                    <%= song.getTitle()%> - <%= song.getArtist()%> (Rating: <%= song.getRating()%>)
-                    <form action="DeleteSong" method="post" style="display:inline;">
-                        <input type="hidden" name="songIndex" value="<%= i%>"> <!-- Pass index instead of id -->
-                        <input type="submit" value="Delete">
-                    </form>
-                </li>
-                <%
-                        }
+             <h2>Added Songs:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% 
+                try {
+                    // Establish database connection and create PreparedStatement
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/account?autoReconnect=true&useSSL=false", "root", "student");
+                    PreparedStatement ps = con.prepareStatement("SELECT title, artist, rating FROM user_song");
+                    ResultSet rs = ps.executeQuery();
+
+                    // Iterate through the result set and display the data in the table
+                    while (rs.next()) {
+            %>
+            <tr>
+                <td><%= rs.getString("title") %></td>
+                <td><%= rs.getString("artist") %></td>
+                <td><%= rs.getInt("rating") %></td>
+            </tr>
+            <%
                     }
-                %>
-            </ul>
+
+                    // Close the database connection and release resources
+                    rs.close();
+                    ps.close();
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            %>
+        </tbody>
+    </table>
         </div>
 
         <footer>
@@ -185,5 +238,5 @@
                 document.getElementById("addSongForm").style.color = "white";
             }
         </script>
-    </body>
+    
 </html>

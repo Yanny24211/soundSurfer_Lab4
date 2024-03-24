@@ -17,6 +17,7 @@ public class Generate {
                 generateIframe(songId);
             }
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

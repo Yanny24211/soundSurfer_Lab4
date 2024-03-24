@@ -13,13 +13,6 @@
     <link rel="stylesheet" href="mystatstyles.css">
 </head>
 <body>
-    <% 
-            String username = (String) request.getAttribute("username"); 
-            String token = (String)request.getAttribute("token");
-            if(token == null){ 
-                response.sendRedirect("login.jsp");
-            }
-        %>
     <div class="top-bar">
         <img src="resources/statsicon.png" alt="libraryicon" class="libraryicon">
         <div class="main-heading">

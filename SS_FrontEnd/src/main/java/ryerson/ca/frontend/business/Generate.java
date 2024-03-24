@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import ryerson.ca.frontend.helper.Song;
 
 public class Generate {
     public static void generateAndInsertSongs() {
@@ -25,28 +26,20 @@ public class Generate {
     private static List<String> readSongIdsFromFile(String filePath) throws IOException {
         List<String> songIds = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
+            String line = null;
 
                 songIds.add(line.trim()); 
             }
+        return null;
         }
-        return songIds;
-    }
 
     private static List<String> selectRandomSongs(List<String> songIds) {
-        Collections.shuffle(songIds);
-        return songIds.subList(0, Math.min(songIds.size(), 9));
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
 
     private static void generateIframe(String songId) {
-        String iframeSrc = "https://open.spotify.com/embed/track/" + songId + "?utm_source=generator";
-        String iframeHtml = "<div class=\"song\">\n" +
-                            "    <iframe style=\"border-radius:12px\" src=\"" + iframeSrc + "\" width=\"100%\" height=\"352\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>\n" +
-                            "</div>";
-
-
-        System.out.println(iframeHtml);
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-}
+    }
+
 
