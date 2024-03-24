@@ -15,7 +15,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>SoundSurfer Discover</title>
+
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -24,8 +26,10 @@
         <div class="suggestions">
             <% 
                 // Read song IDs from the text file
-                List<String> songIds = new ArrayList<>();
-                try (BufferedReader reader = new BufferedReader(new FileReader("/Users/yannypatel/Documents/GitHub Repositories/COE692_Project/soundSurfer_Lab4/SS_discover/tracks.txt"))) {
+
+                try (BufferedReader reader = new BufferedReader(new FileReader("C:/Users/deeps/Desktop/coe692_term_project/soundSurfer_Lab4/SS_discover/tracks.txt"))) {
+
+
                     String line;
                     while ((line = reader.readLine()) != null) {
                         songIds.add(line.trim()); // Add trimmed song ID to the list

@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+C:\Users\deeps\Desktop\coe692_term_project\soundSurfer_Lab4\SS_FrontEnd\src\main\java\ryerson\ca\frontend\business\Generate.java
+C:\Users\deeps\Desktop\coe692_term_project\soundSurfer_Lab4\SS_FrontEnd\src\main\java\ryerson\ca\frontend\front\FrontEnd.java
+C:\Users\deeps\Desktop\coe692_term_project\soundSurfer_Lab4\SS_FrontEnd\src\main\java\ryerson\ca\frontend\business\XMLParser.java
+C:\Users\deeps\Desktop\coe692_term_project\soundSurfer_Lab4\SS_FrontEnd\src\main\java\ryerson\ca\frontend\front\Authenticate.java
+C:\Users\deeps\Desktop\coe692_term_project\soundSurfer_Lab4\SS_FrontEnd\src\main\java\ryerson\ca\frontend\business\Business.java
+C:\Users\deeps\Desktop\coe692_term_project\soundSurfer_Lab4\SS_FrontEnd\src\main\java\ryerson\ca\frontend\helper\User.java
+C:\Users\deeps\Desktop\coe692_term_project\soundSurfer_Lab4\SS_FrontEnd\src\main\java\ryerson\ca\frontend\helper\Song.java
+C:\Users\deeps\Desktop\coe692_term_project\soundSurfer_Lab4\SS_FrontEnd\src\main\java\ryerson\ca\frontend\helper\SongsXML.java
+=======
 /Users/yannypatel/Documents/GitHub Repositories/COE692_Project/soundSurfer_Lab4/SS_FrontEnd/src/main/java/ryerson/ca/frontend/helper/SongsXML.java
 /Users/yannypatel/Documents/GitHub Repositories/COE692_Project/soundSurfer_Lab4/SS_FrontEnd/src/main/java/ryerson/ca/frontend/business/Generate.java
 /Users/yannypatel/Documents/GitHub Repositories/COE692_Project/soundSurfer_Lab4/SS_FrontEnd/src/main/java/ryerson/ca/frontend/helper/User.java
@@ -6,3 +16,4 @@
 /Users/yannypatel/Documents/GitHub Repositories/COE692_Project/soundSurfer_Lab4/SS_FrontEnd/src/main/java/ryerson/ca/frontend/front/FrontEnd.java
 /Users/yannypatel/Documents/GitHub Repositories/COE692_Project/soundSurfer_Lab4/SS_FrontEnd/src/main/java/ryerson/ca/frontend/helper/Song.java
 /Users/yannypatel/Documents/GitHub Repositories/COE692_Project/soundSurfer_Lab4/SS_FrontEnd/src/main/java/ryerson/ca/frontend/front/Authenticate.java
+>>>>>>> 1e7437851d69188a0b874130c971a4d9e9fba794
