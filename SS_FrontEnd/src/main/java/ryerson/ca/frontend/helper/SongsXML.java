@@ -21,10 +21,10 @@ public class SongsXML {
     @XmlElement(name = "song")
     private ArrayList<Song> songs; 
     
-    public List<Song> getBooks(){
+    public List<Song> getSongs(){
         return songs; 
     }
-    public void setBook(ArrayList<Song> sgs){
+    public void setSong(ArrayList<Song> sgs){
         songs = sgs; 
     }
 }

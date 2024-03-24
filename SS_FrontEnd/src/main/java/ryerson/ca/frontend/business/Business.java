@@ -101,42 +101,20 @@ public class Business {
 
 
 
-//    public static SongsXML getServices(String query, String token) throws IOException {
-//
-//        Client searchclient = ClientBuilder.newClient();
-//        WebTarget searchwebTarget
-//                = searchclient.target("http://localhost:8080/SearchBooks/webresources/search");
-//        InputStream is
-//                = searchwebTarget.path(query).request(MediaType.APPLICATION_XML).get(InputStream.class);
-//        String xml = IOUtils.toString(is, "utf-8");
-//        SongsXML songs = songxmltoObjects(xml);
-//        if (token != null) {
-//            Client holdclient = ClientBuilder.newClient();
-//            WebTarget holdwebTarget
-//                    = holdclient.target("http://localhost:8080/HoldBook/webresources/hold/isOnHold");
-//            for (Song song : songs.getSongs()) {
-//
-//                InputStream holddata
-//                        = holdwebTarget.path(book.getIsbn()).queryParam("token", token).
-//                                request(MediaType.APPLICATION_XML).get(InputStream.class);
-//                try{
-//                    Book a=bookholdxmltoObjects(IOUtils.toString(holddata, "utf-8"));
-//                    if(a!=null)
-//                        book.setTobeHold(true);
-//                    else
-//                        book.setTobeHold(false);
-//                }
-//                catch(Exception e){
-//                    book.setTobeHold(false);
-//                }
-//                
-//                
-//            }
-//        }
-//
-//        return (books);
-//
-//    }
+    public static SongsXML getServices(String query, String token) throws IOException {
+        
+        Client searchclient = ClientBuilder.newClient();
+        WebTarget searchwebTarget
+                = searchclient.target("http://localhost:8080/SS_trackLibrary/webresources/search");
+        InputStream is
+                = searchwebTarget.path(query).request(MediaType.APPLICATION_XML).get(InputStream.class);
+        String xml = IOUtils.toString(is, "utf-8");
+        SongsXML songs = songxmltoObjects(xml);
+       
+
+        return (songs);
+
+    }
 
     private static SongsXML songxmltoObjects(String xml) {
         JAXBContext jaxbContext;

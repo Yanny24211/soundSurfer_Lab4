@@ -38,12 +38,7 @@ public class Song {
         this.prodComp = prodComp; 
         this.songFormat = songFormat; 
         this.songDescription = songDescription; 
-        if(rating>=0 && rating<= 5){
-            this.rating = rating; 
-        }
-        else{
-            this.rating = 0;
-        }
+        this.rating = rating; 
     }
     
     //Method Overload, to access information under user capacity
@@ -72,12 +67,7 @@ public class Song {
         return this.rating; 
     }
     public void setRating(int rate){
-        if(rate>=0 && rate<= 5){
-            this.rating = rate; 
-        }
-        else{
-            this.rating = 0;
-        }
+        this.rating = rate; 
     }
     
     public void setProdComp(String prodComp) {
