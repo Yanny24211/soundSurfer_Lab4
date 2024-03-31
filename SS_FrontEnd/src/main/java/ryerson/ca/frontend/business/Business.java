@@ -23,18 +23,34 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import org.apache.commons.io.IOUtils;
+import ryerson.ca.frontend.helper.GenSongsXML;
 import ryerson.ca.frontend.helper.Song;
 import ryerson.ca.frontend.helper.SongsXML;
 import ryerson.ca.frontend.helper.User; 
 
 public class Business {
     
-    private static Connection getCon(){
+    private static Connection getCon(int i){
         Connection con = null; 
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/account?autoReconnect=true&useSSL=false", "root", "student");
-            System.out.println("Connection Established");
+            switch(i){
+                case 1: 
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Account_LBS?autoReconnect=true&useSSL=false", "root", "student123");
+                    System.out.println("Connection Established");
+                    break; 
+                case 2:
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_LBS?autoReconnect=true&useSSL=false", "root", "student123");
+                    System.out.println("Connection Established");
+                    break; 
+                case 3:
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Discover_LBS?autoReconnect=true&useSSL=false", "root", "student123");
+                    System.out.println("Connection Established");
+                    break; 
+            } 
+                
         }
         catch(Exception e){System.out.println("Connection Failed: " + e);} 
         return con;
@@ -46,11 +62,39 @@ public class Business {
         try{
             
             Connection con; 
-            con = getCon();
+            con = getCon(1);
             String userQ = "insert into theUser(user_id, username, date_of_birth, password) values (null, \"" + uname + "\", null, \"" + pass + "\")"; 
             PreparedStatement  ps = con.prepareStatement(userQ); 
-            System.out.print(userQ);
+           
             int rowsAffected = ps.executeUpdate();
+            System.out.print("# of Rows: " + rowsAffected);
+            if(rowsAffected > 0){
+                 System.out.println("Rows added"); 
+            }
+            else{
+                System.out.println("Rows not added"); 
+            }
+            con.close();
+            
+            con = getCon(2);
+            userQ = "insert into theUser(user_id, username, date_of_birth, password) values (null, \"" + uname + "\", null, \"" + pass + "\")"; 
+            ps = con.prepareStatement(userQ); 
+           
+            rowsAffected = ps.executeUpdate();
+            System.out.print("# of Rows: " + rowsAffected);
+            if(rowsAffected > 0){
+                 System.out.println("Rows added"); 
+            }
+            else{
+                System.out.println("Rows not added"); 
+            }
+            con.close();
+            
+            con = getCon(3);
+            userQ = "insert into theUser(user_id, username, date_of_birth, password) values (null, \"" + uname + "\", null, \"" + pass + "\")"; 
+            ps = con.prepareStatement(userQ); 
+           
+            rowsAffected = ps.executeUpdate();
             System.out.print("# of Rows: " + rowsAffected);
             if(rowsAffected > 0){
                  System.out.println("Rows added"); 
@@ -67,7 +111,7 @@ public class Business {
     public static User getUser(String username){  
         User person = null;
         try{
-            Connection con = getCon(); 
+            Connection con = getCon(1); 
             String userQ = "select * from theUser where username like \"" + username + "\""; 
             //System.out.println(userQ); 
             PreparedStatement ps = con.prepareStatement(userQ); 
@@ -101,21 +145,43 @@ public class Business {
 
 
 
-    public static SongsXML getServices(String query, String token) throws IOException {
+    public static SongsXML getServices(String query, String token, String user) throws IOException {
+        if (user == null || user.isEmpty()) {
+        throw new IllegalArgumentException("Username parameter is null or empty");
+        }
         
         Client searchclient = ClientBuilder.newClient();
-        WebTarget searchwebTarget
-                = searchclient.target("http://localhost:8080/SS_trackLibrary/webresources/search");
+        WebTarget searchwebTarget = searchclient.target("http://localhost:8080/SStrackLibrary/webresources/search").queryParam("user", user).path(query);
+        System.out.println("Web Target: " + searchwebTarget);
         InputStream is
-                = searchwebTarget.path(query).request(MediaType.APPLICATION_XML).get(InputStream.class);
+                = searchwebTarget.request(MediaType.APPLICATION_XML).get(InputStream.class);
         String xml = IOUtils.toString(is, "utf-8");
         SongsXML songs = songxmltoObjects(xml);
        
-
-        return (songs);
+        
+        
+        return songs;
 
     }
+    
+    public static GenSongsXML getGenServices() throws IOException {
+        String query = "generate";
+        System.out.println("getGenServices Called");
+        Client searchclient = ClientBuilder.newClient();
+        WebTarget searchwebTarget = searchclient.target("http://localhost:8080/SS_discover/index.html/webresources/discover");
+        System.out.println("Web Target: " + searchwebTarget);
+        InputStream is
+                = searchwebTarget.request(MediaType.APPLICATION_XML).get(InputStream.class);
+        
+        String xml = IOUtils.toString(is, "utf-8");
+        GenSongsXML songs = gensongxmltoObjects(xml);
+        System.out.println("Input Stream: " + xml);
+        
+        System.out.println("Result from getGenServices: " + songs);
+        return songs;
 
+    }
+    
     private static SongsXML songxmltoObjects(String xml) {
         JAXBContext jaxbContext;
         try {
@@ -131,5 +197,20 @@ public class Business {
         }
         return null;
     }
+    
+    private static GenSongsXML gensongxmltoObjects(String xml) {
+        JAXBContext jaxbContext;
+        try {
+            jaxbContext = JAXBContext.newInstance(GenSongsXML.class);
 
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+            GenSongsXML songs = (GenSongsXML) jaxbUnmarshaller.unmarshal(new StringReader(xml));
+            return songs;
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

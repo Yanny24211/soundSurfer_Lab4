@@ -6,19 +6,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import ryerson.ca.frontend.helper.GenSongs;
+import ryerson.ca.frontend.helper.GenSongsXML;
 
 public class Generate {
-    public static void generateAndInsertSongs() {
+    public static ArrayList<GenSongs> generateAndInsertSongs() {
+        ArrayList<GenSongs> sg = new ArrayList<>(); 
         try {
-            List<String> songIds = readSongIdsFromFile("C:\\Users\\deeps\\Desktop\\coe692_term_project\\soundSurfer_Lab4\\SS_discover\\tracks.txt");
+            List<String> songIds = readSongIdsFromFile("/Users/yannypatel/Documents/GitHub Repositories/COE692_Project/soundSurfer_Lab4/SS_discover/tracks.txt");
             List<String> selectedSongIds = selectRandomSongs(songIds);
 
             for (String songId : selectedSongIds) {
-                generateIframe(songId);
+                GenSongs generatedSong = new GenSongs(songId); 
+                sg.add(generatedSong); 
             }
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return sg; 
     }
 
     // Method to read Spotify song IDs from a file
@@ -37,7 +43,7 @@ public class Generate {
 
     private static List<String> selectRandomSongs(List<String> songIds) {
         Collections.shuffle(songIds);
-        return songIds.subList(0, Math.min(songIds.size(), 9));
+        return songIds.subList(0, Math.min(songIds.size(), 12));
     }
 
     private static void generateIframe(String songId) {

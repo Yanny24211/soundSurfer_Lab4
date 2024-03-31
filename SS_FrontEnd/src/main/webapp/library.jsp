@@ -144,6 +144,13 @@
         }
         </style>
     </head>
+    <% 
+            String username = (String) request.getSession().getAttribute("username"); 
+            String token = (String)request.getSession().getAttribute("token");
+            if(token == null){ 
+                response.sendRedirect("index.html");
+            }
+    %>
     
         <div class="top-bar">
             <div class="main-heading">
@@ -191,7 +198,7 @@
             <% 
                 try {
                     // Establish database connection and create PreparedStatement
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/account?autoReconnect=true&useSSL=false", "root", "student");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_LBS?autoReconnect=true&useSSL=false", "root", "student123");
                     PreparedStatement ps = con.prepareStatement("SELECT title, artist, rating FROM user_song");
                     ResultSet rs = ps.executeQuery();
 
@@ -221,10 +228,16 @@
         <footer>
             <p>Developed by Deep Patel and Yanny Patel</p>
             <div class="footer-buttons">
-                <a href="discover.jsp"><button class="button-style-footer">Discover</button></a>
+                <form action="FrontEnd" method="post">
+                    <input type="hidden" name="pageName" value="goDiscover"/>
+                    <input type="submit" value="Discover" class="button-style-footer">
+                </form>
                 <a href="library.jsp"><button class="button-style-footer">Track Library</button></a>
                 <a href="stats.jsp"><button class="button-style-footer">My Statistics</button></a>
-                <form action="Logout" method="get" class="lgout"><input type="submit" value="Logout" class="button-style-logout"></form>
+                <form class="lgout" action="FrontEnd" method="post">
+                <input type="hidden" name="pageName" value="logout"/>
+                <input type="submit" value="Logout" class="button-style-logout">
+                </form>
             </div>
         </footer>
 

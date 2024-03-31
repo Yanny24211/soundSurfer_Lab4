@@ -19,7 +19,7 @@ public class AddSong extends HttpServlet {
         Connection con = null; 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/account?autoReconnect=true&useSSL=false", "root", "student");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_LBS?autoReconnect=true&useSSL=false", "root", "student123");
             System.out.println("Connection Established");
         }
         catch(Exception e){System.out.println("Connection Failed: " + e);} 
@@ -33,9 +33,9 @@ public class AddSong extends HttpServlet {
 
     try {
         Connection con = getCon();
-        String insertQuery = "INSERT INTO user_song (title, artist, rating) VALUES ('" + title + "', '" + artist + "', " + rating + ")";
+        String insertQuery = "INSERT INTO user_song (title, artist, rating, username) VALUES ('" + title + "', '" + artist + "', '" + rating + "', '" + user1 + "')";
         PreparedStatement ps = con.prepareStatement(insertQuery);
-
+        System.out.println(ps);
         int rowsAffected = ps.executeUpdate();
 
         if (rowsAffected > 0) {
@@ -58,7 +58,8 @@ public class AddSong extends HttpServlet {
         String songName = request.getParameter("songName");
         String artist = request.getParameter("artist");
         int rating = Integer.parseInt(request.getParameter("rating"));
-        String user = (String) request.getAttribute("user");
+        String user = (String) request.getSession().getAttribute("username");
+        System.out.println("ADD SONG USER: " + user); 
         // Create a new Song object
         Song newSong = new Song(songName, artist, rating);
        

@@ -37,7 +37,7 @@ public class Authenticate {
 
         signatureAlgorithm = SignatureAlgorithm.HS256;
         
-        secretString = Encoders.BASE64.encode("mysecuresecurecodemysecuresecurecode".getBytes());
+        secretString = Encoders.BASE64.encode("mysecuresecurecodemysecuresecurecodemysecuresecurecodemysecuresecurecode".getBytes());
 
     }
 
@@ -45,7 +45,9 @@ public class Authenticate {
 
         //The JWT signature algorithm we will be using to sign the token
         long nowMillis = System.currentTimeMillis();
+        
         Date now = new Date(nowMillis);
+        System.out.println("Current Time: " + now);
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretString);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
@@ -62,8 +64,9 @@ public class Authenticate {
             long expMillis = nowMillis + ttlMillis;
             Date exp = new Date(expMillis);
             builder.setExpiration(exp);
+            System.out.print("Exp: " + exp);
         }
-
+        
         String a = builder.compact();
         System.out.println(a);
         //Builds the JWT and serializes it to a compact, URL-safe string
@@ -76,7 +79,7 @@ public class Authenticate {
         System.out.println("I am veryfying! :" + jwt);
         try {
             jws = Jwts.parserBuilder() // (1)
-                    .setSigningKey("mysecuresecurecodemysecuresecurecode") // (2)
+                    .setSigningKey("mysecuresecurecodemysecuresecurecodemysecuresecurecodemysecuresecurecode".getBytes()) // (2)
                     .build() // (3)
                     .parseClaimsJws(jwt); // (4)
 
@@ -85,7 +88,7 @@ public class Authenticate {
             System.out.println(username);
                   
         } catch (JwtException ex) {       // (5)
-
+            System.out.println(ex);
             System.out.println(" we *cannot* use the JWT as intended by its creator");
         }
         if (jws == null) {

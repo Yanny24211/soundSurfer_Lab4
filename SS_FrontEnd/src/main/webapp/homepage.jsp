@@ -137,15 +137,16 @@
             }
 
         </style>
-    </head>
-    <body>
         <% 
-            String username = (String) request.getAttribute("username"); 
-            String token = (String)request.getAttribute("token");
+            String username = (String) request.getSession().getAttribute("username"); 
+            String token = (String)request.getSession().getAttribute("token");
             if(token == null){ 
-                response.sendRedirect("login.jsp");
+                response.sendRedirect("index.html");
             }
         %>
+    </head>
+    <body>
+        
         <h1>Hello ${username}</h1>
         <div class="container">
             <form action="FrontEnd" method="post">

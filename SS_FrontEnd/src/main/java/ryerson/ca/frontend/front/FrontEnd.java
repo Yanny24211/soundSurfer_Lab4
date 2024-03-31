@@ -26,6 +26,7 @@ import ryerson.ca.frontend.helper.Song;
 import ryerson.ca.frontend.helper.SongsXML;
 import ryerson.ca.frontend.helper.User; 
 import ryerson.ca.frontend.business.Business; 
+import ryerson.ca.frontend.helper.GenSongsXML;
 
 
 /**
@@ -88,7 +89,7 @@ public class FrontEnd extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        HttpSession session = request.getSession(true);
         String token = isAuthenticated(request).getKey();
         //String uname = isAuthenticated(request).getValue();
         String hiddenParam = request.getParameter("pageName");
@@ -101,22 +102,21 @@ public class FrontEnd extends HttpServlet {
                 password = request.getParameter("password");
                 boolean isAuthenticated = Business.validate(username, password);
                 if (isAuthenticated) {
-                    request.setAttribute("username", username);
-                    token = autho.createJWT("FrontEnd", username, 100000);
-                    request.setAttribute("token", token);
+                    token = autho.createJWT("FrontEnd", username, 10000000);
+                    session.setAttribute("username", username);
+                    session.setAttribute("token", token);
          
                     Cookie newCookie = new Cookie(authenticationCookieName, token);
                     System.out.println("Cookie" + newCookie); 
                     response.addCookie(newCookie);
-                    RequestDispatcher requestDispatcher = request.
-                            getRequestDispatcher("homepage.jsp");
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("homepage.jsp");
 
                     requestDispatcher.forward(request, response);
 
                 }
                 else{
                     out.println("Login Attempt Unsuccessful, Please Try Again");
-                    response.sendRedirect("login.jsp");
+                    response.sendRedirect("index.html");
                 }
                 break;
             case "register":
@@ -127,33 +127,44 @@ public class FrontEnd extends HttpServlet {
                     User user = new User(username, password); 
                     Business.addUser(user); 
                     out.println("Registration Successful, Redirecting to Login Page!");
-                    response.sendRedirect("login.jsp");
+                    response.sendRedirect("index.html");
          
                 }
                 else{out.println("Username already taken. Choose a different username.");}
                 break;
             case "logout":
-                HttpSession session = request.getSession(); 
+                session = request.getSession(); 
                 System.out.println("Sesson:" + session);
                 session.removeAttribute("username");
                 session.invalidate(); 
-                response.sendRedirect("login.jsp");
+                response.sendRedirect("index.html");
                 break; 
             case "goDiscover":
-                response.sendRedirect("discover.jsp");
+                System.out.println("goDiscover Called");
+                GenSongsXML genResult; 
+                genResult = retreiveGenServicesFromBackend();
+                System.out.println("Services retrieved");
+                request.setAttribute("genSongResults", genResult);
+                System.out.println("genSongResults: " + genResult);
+                RequestDispatcher rdd = request.getRequestDispatcher("discover.jsp");
+                rdd.forward(request, response);
                 break; 
                 
             case "goTrackLib": 
-                response.sendRedirect("library.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("library.jsp");
+                rd.forward(request, response); 
                 break;
             case "search":
                 SongsXML result;
+                String user = (String) request.getSession().getAttribute("username"); 
+                System.out.println("THE AQUIRED USERNAME>> " + user);
                 String query = request.getParameter("query");
+                
                 //request.setAttribute("username", uname);
-                result = retreiveServicesFromBackend(query, token);
+                result = retreiveServicesFromBackend(query, token, user);
 
-                request.setAttribute("bookResults", result);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("frontpageWithLogin.jsp");
+                request.setAttribute("songResults", result);
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("librarySearch.jsp");
                 requestDispatcher.forward(request, response);
                 break;
         }
@@ -200,14 +211,23 @@ public class FrontEnd extends HttpServlet {
         return "Process Redirector";
     }// </editor-fold>
 
-    private SongsXML retreiveServicesFromBackend(String query, String token) {
+    private SongsXML retreiveServicesFromBackend(String query, String token, String user) {
         try {
-            return (Business.getServices(query, token));
+            return (Business.getServices(query, token, user));
         } catch (IOException ex) {
             Logger.getLogger(FrontEnd.class.getName()).log(Level.SEVERE, null, ex);
             return (null);
         }
 
     }
+    
+    private GenSongsXML retreiveGenServicesFromBackend() {
+        try {
+            return (Business.getGenServices());
+        } catch (IOException ex) {
+            Logger.getLogger(FrontEnd.class.getName()).log(Level.SEVERE, null, ex);
+            return (null);
+        }
 
+    }
 }

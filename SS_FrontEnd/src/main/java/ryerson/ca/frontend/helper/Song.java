@@ -17,33 +17,34 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Song {
     private String title;
     private String artist; 
-    private String prodComp; 
-    private String genre; 
-    private double runtime; 
-    private String songFormat; 
-    private String songDescription; 
-    private String countryOfOrigin; 
+//    private String prodComp; 
+//    private String genre; 
+//    private double runtime; 
+//    private String songFormat; 
+//    private String songDescription; 
+//    private String countryOfOrigin; 
     private int rating; 
-    private String releaseDate; 
+//    private String releaseDate; 
 
-    public Song(String title, String artist, String genre, double runtime, int rating, String releaseDate, String countryOfOrigin, String prodComp, String songFormat, String songDescription){
-        this.title = title; 
-        this.artist = artist; 
-        this.genre = genre; 
-        this.runtime = runtime; 
-        this.releaseDate = releaseDate; 
-        this.countryOfOrigin = countryOfOrigin; 
-        this.prodComp = prodComp; 
-        this.songFormat = songFormat; 
-        this.songDescription = songDescription; 
-        if(rating>=0 && rating<= 5){
-            this.rating = rating; 
-        }
-        else{
-            this.rating = 0;
-        }
+//    public Song(String title, String artist, String genre, double runtime, int rating, String releaseDate, String countryOfOrigin, String prodComp, String songFormat, String songDescription){
+//        this.title = title; 
+//        this.artist = artist; 
+//        this.genre = genre; 
+//        this.runtime = runtime; 
+//        this.releaseDate = releaseDate; 
+//        this.countryOfOrigin = countryOfOrigin; 
+//        this.prodComp = prodComp; 
+//        this.songFormat = songFormat; 
+//        this.songDescription = songDescription; 
+//        if(rating>=0 && rating<= 5){
+//            this.rating = rating; 
+//        }
+//        else{
+//            this.rating = 0;
+//        }
+//    }
+    public Song(){
     }
-    
     public Song(String title, String artist, int rating) {
         this.title = title;
         this.artist = artist;
