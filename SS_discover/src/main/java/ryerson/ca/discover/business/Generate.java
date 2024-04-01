@@ -13,7 +13,7 @@ public class Generate {
     public static ArrayList<GenSongs> generateAndInsertSongs() {
         ArrayList<GenSongs> sg = new ArrayList<>(); 
         try {
-            List<String> songIds = readSongIdsFromFile("/Users/yannypatel/Documents/GitHub Repositories/COE692_Project/soundSurfer_Lab4/SS_discover/tracks.txt");
+            List<String> songIds = readSongIdsFromFile("/Users/yannypatel/Documents/GitHub Repositories/COE692_Project/Sound Surfer Main/SS_discover/tracks.txt");
             List<String> selectedSongIds = selectRandomSongs(songIds);
 
             for (String songId : selectedSongIds) {

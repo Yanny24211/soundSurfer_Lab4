@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soundsurfer/mystats</title>
+    <title>Soundsurfer My Stats</title>
     <link rel="stylesheet" href="mystatstyles.css">
 </head>
 <body>

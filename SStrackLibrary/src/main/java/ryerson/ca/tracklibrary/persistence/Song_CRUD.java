@@ -37,13 +37,13 @@ public class Song_CRUD {
         try{
             Connection con= getCon();
             
-            String q = "SELECT title, artist, rating FROM user_song WHERE title LIKE ? OR artist LIKE ? AND username LIKE ?";
+            String q = "SELECT title, artist, rating FROM user_song WHERE (title LIKE ? OR artist LIKE ?) AND username LIKE ?";
             ps = con.prepareStatement(q);
             
             //System.out.println("%" + query + "%");
-            ps.setString(1, "%" + query + "%");
+            ps.setString(1, '%' + query + '%');
             
-            ps.setString(2, "%" + query + "%");
+            ps.setString(2, '%' + query + '%');
             
             //System.out.println("'" + user + "'");
             ps.setString(3, "" + user + "");
